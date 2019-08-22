@@ -1,4 +1,5 @@
 import { Pendulum } from "./Pendulum.js";
+import { DoublePendulum } from "./DoublePendulum.js";
 
 /**
  * Handles drawing directly to the canvas
@@ -17,7 +18,8 @@ class DrawingApp {
         this.context.lineWidth = 1;
         this.lastRender = 0;
         
-        this.pendulum = new Pendulum(175, Math.PI, 17500);
+        //this.pendulum = new Pendulum(175, Math.PI / 3, 17500);
+        this.pendulum = new DoublePendulum(110, 90, Math.PI / 2, 2 * Math.PI / 3, 200, 200, 1000)
     }
 
     /**
@@ -36,8 +38,25 @@ class DrawingApp {
             2 * Math.PI
         );
         this.context.fill();
-        let x = this.canvas.width / 2 + this.pendulum.length * Math.cos(this.pendulum.angle);
-        let y = this.canvas.height / 2 + this.pendulum.length * Math.sin(this.pendulum.angle);
+        //Double pendulum
+        let x1 = this.canvas.width / 2 + this.pendulum.length1 * Math.cos(this.pendulum.angle1 - Math.PI / 2);
+        let y1 = this.canvas.height / 2 - this.pendulum.length1 * Math.sin(this.pendulum.angle1 - Math.PI / 2);
+        let x2 = x1 + this.pendulum.length2 * Math.cos(this.pendulum.angle2 - Math.PI / 2);
+        let y2 = y1 - this.pendulum.length2 * Math.sin(this.pendulum.angle2 - Math.PI / 2);
+        this.context.beginPath();
+        this.context.moveTo(this.canvas.width / 2,this.canvas.height / 2);
+        this.context.lineTo(x1, y1);
+        this.context.lineTo(x2, y2);
+        this.context.stroke();
+        this.context.beginPath();
+        this.context.arc(x1, y1, this.canvas.width / 64, 0, 2 * Math.PI);
+        this.context.fill();
+        this.context.beginPath();
+        this.context.arc(x2, y2, this.canvas.width / 64, 0, 2 * Math.PI);
+        this.context.fill();
+        //Single pendulum
+        /*let x = this.canvas.width / 2 + this.pendulum.length * Math.cos(this.pendulum.angle - Math.PI / 2);
+        let y = this.canvas.height / 2 - this.pendulum.length * Math.sin(this.pendulum.angle - Math.PI / 2);
         this.context.beginPath();
         this.context.moveTo(this.canvas.width / 2,this.canvas.height / 2);
         this.context.lineTo(x, y);
@@ -50,7 +69,7 @@ class DrawingApp {
             0,
             2 * Math.PI
         );
-        this.context.fill();
+        this.context.fill();*/
     }
 
     /**
@@ -58,9 +77,7 @@ class DrawingApp {
      */
     update(timestamp) {
         let delta = timestamp - this.lastRender;
-        console.log(this.pendulum.angularVelocity);
-
-        this.pendulum.update(delta / 16000);
+        this.pendulum.update(delta / 640);
         this.draw();
         this.lastRender = timestamp;
         window.requestAnimationFrame(this.update.bind(this));

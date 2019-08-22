@@ -8,7 +8,7 @@ export class Pendulum {
     /**
      * Initialize the pendulum
      * @param length: length of the rod in pixels
-     * @param angle: start angle
+     * @param angle: start angle from vertical
      * @param gravity: gravitational acceleration in pixels per second squared
      */
     constructor(length, angle, gravity) {
@@ -25,7 +25,7 @@ export class Pendulum {
         // State is [angle, angular velocity]
         let changeFunction = state => [
             state[1],
-            -Math.sin(state[0] - Math.PI / 2) * (this.gravity / this.length)
+            -Math.sin(state[0]) * (this.gravity / this.length)
         ];
         let state = rk4(changeFunction, [this.angle, this.angularVelocity], dt);
         this.angle = state[0] % (2 * Math.PI);
