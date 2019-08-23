@@ -1,4 +1,3 @@
-import { Pendulum } from "./Pendulum.js";
 import { DoublePendulum } from "./DoublePendulum.js";
 
 /**
@@ -18,8 +17,7 @@ class DrawingApp {
         this.context.lineWidth = 1;
         this.lastRender = 0;
         
-        //this.pendulum = new Pendulum(175, Math.PI / 3, 17500);
-        this.pendulum = new DoublePendulum(110, 90, Math.PI / 2, 2 * Math.PI / 3, 200, 200, 1000)
+        this.pendulum = new DoublePendulum(110, 90, Math.PI / 6, 2 * Math.PI / 3, 200, 200, 1000)
     }
 
     /**
@@ -39,10 +37,10 @@ class DrawingApp {
         );
         this.context.fill();
         //Double pendulum
-        let x1 = this.canvas.width / 2 + this.pendulum.length1 * Math.cos(this.pendulum.angle1 - Math.PI / 2);
-        let y1 = this.canvas.height / 2 - this.pendulum.length1 * Math.sin(this.pendulum.angle1 - Math.PI / 2);
-        let x2 = x1 + this.pendulum.length2 * Math.cos(this.pendulum.angle2 - Math.PI / 2);
-        let y2 = y1 - this.pendulum.length2 * Math.sin(this.pendulum.angle2 - Math.PI / 2);
+        let x1 = this.canvas.width / 2 + this.pendulum.length1 * Math.sin(this.pendulum.angle1);
+        let y1 = this.canvas.height / 2 + this.pendulum.length1 * Math.cos(this.pendulum.angle1);
+        let x2 = x1 + this.pendulum.length2 * Math.sin(this.pendulum.angle2);
+        let y2 = y1 + this.pendulum.length2 * Math.cos(this.pendulum.angle2);
         this.context.beginPath();
         this.context.moveTo(this.canvas.width / 2,this.canvas.height / 2);
         this.context.lineTo(x1, y1);
@@ -54,22 +52,6 @@ class DrawingApp {
         this.context.beginPath();
         this.context.arc(x2, y2, this.canvas.width / 64, 0, 2 * Math.PI);
         this.context.fill();
-        //Single pendulum
-        /*let x = this.canvas.width / 2 + this.pendulum.length * Math.cos(this.pendulum.angle - Math.PI / 2);
-        let y = this.canvas.height / 2 - this.pendulum.length * Math.sin(this.pendulum.angle - Math.PI / 2);
-        this.context.beginPath();
-        this.context.moveTo(this.canvas.width / 2,this.canvas.height / 2);
-        this.context.lineTo(x, y);
-        this.context.stroke();
-        this.context.beginPath();
-        this.context.arc(
-            x,
-            y,
-            this.canvas.width / 32,
-            0,
-            2 * Math.PI
-        );
-        this.context.fill();*/
     }
 
     /**

@@ -11,7 +11,8 @@ export class Pendulum {
      * @param angle: start angle from vertical
      * @param gravity: gravitational acceleration in pixels per second squared
      */
-    constructor(length, angle, gravity) {
+    constructor(radius, length, angle, gravity) {
+        this.radius = radius;
         this.angularVelocity = 0;
         this.length = length;
         this.angle = angle;
@@ -28,7 +29,7 @@ export class Pendulum {
             -Math.sin(state[0]) * (this.gravity / this.length)
         ];
         let state = rk4(changeFunction, [this.angle, this.angularVelocity], dt);
-        this.angle = state[0] % (2 * Math.PI);
+        this.angle = state[0];
         this.angularVelocity = state[1] ;
     }
 
